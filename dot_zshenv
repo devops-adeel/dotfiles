@@ -1,0 +1,4 @@
+# uv
+export PATH="/Users/adeel/.local/bin:$PATH"
+
+source "$HOME/.orbstack/shell/init.zsh" 2>/dev/null || :

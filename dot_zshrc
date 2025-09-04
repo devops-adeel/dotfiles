@@ -1,0 +1,228 @@
+# Performance profiling (comment out in production)
+# zmodload zsh/zprof
+
+# M3 Pro Optimizations - 12 cores (6 performance + 6 efficiency), 36GB RAM
+export MAKEFLAGS="-j12"                    # Use all 12 cores for parallel builds
+export CMAKE_BUILD_PARALLEL_LEVEL=12       # CMake parallel builds
+export CPPFLAGS="-march=armv8.5-a"        # ARM optimization for M3 Pro
+export LDFLAGS="-Wl,-ld_classic"          # Use classic linker for compatibility
+
+# Load environment variables efficiently
+if [[ -f .env ]]; then
+  set -a; source .env; set +a
+fi
+
+# Load 1Password service-account-token efficiently
+if [[ -f .config/graphiti/service-token ]]; then
+  set -a; source .config/graphiti/service-token; set +a
+fi
+
+# History configuration - optimized for large memory
+HISTFILE=~/.zsh_history
+HISTSIZE=50000                          # Increased for 36GB RAM
+SAVEHIST=50000                          # Larger history in memory
+setopt HIST_IGNORE_ALL_DUPS             # Don't save duplicates
+setopt HIST_FIND_NO_DUPS                # Don't display duplicates when searching
+setopt HIST_IGNORE_SPACE                # Don't save commands starting with space
+setopt HIST_REDUCE_BLANKS               # Remove unnecessary blanks
+setopt INC_APPEND_HISTORY               # Add commands as they're typed
+setopt EXTENDED_HISTORY                 # Add timestamp to history
+setopt HIST_VERIFY                      # Show command with history expansion before executing
+export HISTIGNORE="*password* *token* *key* *secret*"
+
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
+
+# Enhanced aliases optimized for M3 Pro performance
+alias ll="eza --color=always --long --git --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias l="eza --color=always --icons=always"
+alias la="eza --color=always --icons=always -la"
+alias ls="eza --color=always --icons=always"
+alias grep="grep --color=auto"
+alias rg="rg --smart-case --hidden"     # Use ripgrep with smart settings
+alias ..="cd .."
+alias ...="cd ../.."
+alias mkdir="mkdir -p"
+alias cat="bat -p --paging=never"          # Use bat with no paging for speed
+
+# Development aliases leveraging M3 Pro cores
+alias make="make -j12"                  # Always use parallel make
+alias cmake="cmake -j12"               # Parallel CMake builds  
+alias cargo-fast="cargo build --jobs 12"  # Fast Rust builds
+alias npm-fast="npm install --prefer-offline --no-audit"  # Fast npm installs
+alias python-bench="python -m timeit"  # Quick Python benchmarking
+
+# System monitoring aliases for M3 Pro
+alias cpu="top -o cpu"                 # Monitor CPU usage
+alias mem="top -o mem"                 # Monitor memory usage
+alias temps="sudo powermetrics -n 1 -s thermal | grep 'CPU die temperature'"  # CPU temps
+
+# Completion system - optimized for M3 Pro performance
+fpath=(/Users/adeel/.docker/completions $fpath)
+
+# Smart completion loading with caching for faster startup
+autoload -Uz compinit
+# Check if we need to regenerate compdump (once per day)
+if [[ -n ${HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C  # Skip security check for faster loading
+fi
+
+# Enhanced completion styling - optimized for high-resolution displays
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+# Faster completion for large directories (M3 Pro can handle it)
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# Useful ZSH options
+setopt AUTO_CD              # No need for 'cd' when changing directories
+setopt AUTO_PUSHD           # Make cd push the old directory onto the stack
+setopt PUSHD_IGNORE_DUPS    # Don't push the same dir twice
+setopt EXTENDED_GLOB        # Extended globbing. Allows using regular expressions
+setopt NO_CASE_GLOB         # Case insensitive globbing
+setopt CORRECT              # Command auto-correction
+
+# Lazy-load NVM (if you use it)
+export NVM_LAZY_LOAD=true
+export NVM_COMPLETION=true
+
+# Reduce Starship debug output
+export STARSHIP_LOG="error"
+
+# Pre-command executed before each prompt
+function starship_precmd() {
+  # Clear command output with a newline before long outputs
+  if [ $COLUMNS -lt $(tput cols) ]; then
+    echo ""
+  fi
+}
+precmd_functions+=(starship_precmd)
+
+# =============================================================================
+# Terminal Performance Monitoring System
+# =============================================================================
+# Reactive terminal optimization based on system performance metrics
+# Automatically adjusts Starship prompt complexity and terminal behavior
+# based on CPU temperature, load, memory pressure, and battery state
+
+# Source the performance monitoring functions (lightweight version)
+if [[ -f ~/.config/terminal-perf/monitor-lite.sh ]]; then
+  source ~/.config/terminal-perf/monitor-lite.sh
+  
+  # DO NOT automatically run monitoring - it causes hangs
+  # Users can manually check performance with aliases
+  
+  # Manual performance mode commands
+  alias perf-eco='set_performance_mode eco'
+  alias perf-balanced='set_performance_mode balanced'
+  alias perf-performance='set_performance_mode performance'
+  alias perf-auto='set_performance_mode auto'
+  alias perf-status='~/.config/terminal-perf/monitor.sh status'
+  alias perf-check='monitor_performance'
+  
+  # Debug mode (set to 1 to enable detailed metrics logging)
+  export TERMINAL_PERF_DEBUG=0
+  
+  # Smart execution wrapper aliases
+  alias smart='~/.config/terminal-perf/smart-exec.sh'
+  alias perf-terminal='~/.config/terminal-perf/smart-exec.sh terminal'
+  
+  # Quick launchers for different terminal modes
+  alias term-eco='perf-terminal eco'
+  alias term-balanced='perf-terminal balanced'
+  alias term-perf='perf-terminal performance'
+  alias term-auto='perf-terminal auto'
+fi
+
+# M3 Pro Performance Optimizations
+# Set optimal memory allocation for large operations
+ulimit -n 8192                          # Increase file descriptor limit
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES  # Speed up fork operations
+
+# Development environment optimizations
+export GOPRIVATE="*"                    # Go private module optimization
+export GOPROXY="direct"                 # Direct Go proxy for faster downloads
+export GOFLAGS="-buildvcs=false"        # Disable VCS stamping for faster builds
+
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi
+# zprof
+
+# Homebrew performance optimizations for M3 Pro
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_PARALLEL_JOBS=12        # Use all 12 cores for Homebrew builds
+export HOMEBREW_MAKE_JOBS=12            # Parallel make jobs
+export HOMEBREW_BOTTLE_DOMAIN="https://ghcr.io/v2/homebrew/core"  # Faster bottle downloads
+
+# Optimized aliases for M3 Pro
+alias brewup='brew update && brew upgrade && brew cleanup'
+alias brew-maintain='brew update && brew upgrade && brew cleanup && brew doctor && brew bundle dump --force'
+alias brew-fast='HOMEBREW_PARALLEL_JOBS=12 brew'
+
+# Development optimizations
+export CARGO_BUILD_JOBS=12              # Rust parallel builds
+export NPM_CONFIG_JOBS=12               # npm parallel operations
+export YARN_CACHE_FOLDER="$HOME/.yarn-cache"  # Centralized yarn cache
+export PIP_CACHE_DIR="$HOME/.pip-cache" # Python package cache
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/adeel/.lmstudio/bin"
+
+# Added by Windsurf
+export PATH="/Users/adeel/.codeium/windsurf/bin:$PATH"
+
+# Node.js/NVM optimizations for M3 Pro
+export NVM_DIR="$HOME/.nvm"
+export NODE_OPTIONS="--max-old-space-size=32768"  # Use more memory for Node.js (32GB available)
+
+# Lazy load NVM for faster shell startup (already configured above)
+# Only load when actually needed
+nvm() {
+  unset -f nvm
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  nvm "$@"
+}
+
+# M3 Pro ARM64 optimizations
+export ARCHFLAGS="-arch arm64"          # Ensure ARM64 compilation
+export SYSTEM_VERSION_COMPAT=0          # Disable version compatibility shims
+
+# Cache directory optimizations (utilize SSD speed)
+export TMPDIR=/tmp                       # Use fast SSD for temporary files
+
+# AI/ML Development optimizations
+export PYTORCH_ENABLE_MPS_FALLBACK=1    # Enable Metal Performance Shaders
+export TRANSFORMERS_CACHE="$HOME/.cache/transformers"  # Centralized model cache
+
+# =============================================================================
+# M3 Pro Optimization Summary (Apple M3 Pro, 12 cores, 36GB RAM)
+# =============================================================================
+# • Parallel builds: All build tools configured for 12-core utilization
+# • Memory: Increased history size and Node.js heap to leverage 36GB RAM
+# • ARM64: Native ARM compilation flags for optimal performance
+# • Caching: Enhanced completion and package manager caching
+# • Lazy loading: NVM and other tools load only when needed
+# • Development: AI/ML optimizations for Metal Performance Shaders
+# • Monitoring: Added performance monitoring aliases
+# =============================================================================
+
+alias claude="/Users/adeel/.claude/local/claude"

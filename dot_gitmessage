@@ -1,0 +1,80 @@
+# <type>[optional scope]: <description>
+#
+# [optional body]
+#
+# [optional footer(s)]
+
+# ==============================================================================
+# CONVENTIONAL COMMITS v1.0.0 SPECIFICATION
+# ==============================================================================
+#
+# Format: <type>[optional scope]: <description>
+#         ^       ^                ^
+#         |       |                +-> Present tense, imperative mood
+#         |       |                    (not capitalized, no period)
+#         |       |
+#         |       +-> Optional scope: affected component/area
+#         |
+#         +-> Required type (see types below)
+#
+# ==============================================================================
+# TYPES (correlate with Semantic Versioning)
+# ==============================================================================
+# feat:     New feature (MINOR version bump)
+# fix:      Bug fix (PATCH version bump)
+# docs:     Documentation changes
+# style:    Code style/formatting (no logic changes)
+# refactor: Code restructuring (no feature/bug changes)
+# perf:     Performance improvements
+# test:     Adding/updating tests
+# build:    Build system/dependencies (webpack, npm, etc.)
+# ci:       CI/CD changes (GitHub Actions, Travis, etc.)
+# chore:    Maintenance tasks (release prep, tooling)
+# revert:   Reverting previous commits
+#
+# ==============================================================================
+# BREAKING CHANGES (MAJOR version bump)
+# ==============================================================================
+# Indicate with ! after type/scope: feat!: or feat(api)!:
+# Include BREAKING CHANGE: footer with detailed explanation
+#
+# ==============================================================================
+# SCOPES (optional)
+# ==============================================================================
+# Common scopes: api, ui, core, auth, db, config, test, ci, docs
+# Project-specific examples: parser, middleware, routes, models
+#
+# ==============================================================================
+# EXAMPLES
+# ==============================================================================
+# feat: add Polish language support
+# fix(parser): handle empty input gracefully
+# feat(api)!: send email notification when product ships
+# docs: update README with new installation steps
+# style: fix linting errors in auth module
+# refactor(core): extract common validation logic
+# perf: improve database query performance by 15%
+# test(auth): add unit tests for login validation
+# build: update webpack to version 5.0
+# ci: add automated deployment to staging
+# chore: prepare release v2.1.0
+# revert: revert "feat: add experimental feature"
+#
+# ==============================================================================
+# BODY (optional, wrap at 72 characters)
+# ==============================================================================
+# Explain the MOTIVATION for the change. Focus on WHY, not WHAT.
+# What problem does this solve? What was the previous behavior?
+#
+# ==============================================================================
+# FOOTERS (optional, follow git trailer format)
+# ==============================================================================
+# Reviewed-by: Name <email@example.com>
+# Refs: #123
+# Closes: #456
+# Fixes: #789
+# See-also: #999
+# Co-authored-by: Name <email@example.com>
+# BREAKING CHANGE: detailed explanation of the breaking change
+#
+# ==============================================================================

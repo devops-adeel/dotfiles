@@ -1,0 +1,165 @@
+[user]
+	name = Adeel Ahmad
+	email = adeel.ahmad@live.co.uk
+
+[core]
+	editor = vim
+	autocrlf = input
+	preloadindex = true  # Loads index into memory for faster status/add
+        fscache = true       # Enables filesystem cache for faster status checks
+	untrackedCache = true # Speeds up status checks in large repositories
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[pull]
+	rebase = true
+	ff = only            # Prevents accidental merge commits during pulls
+
+[url "https://github.com/hashicorp"]
+	insteadOf = git@github.com:hashicorp
+
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	cm = commit
+
+	# Better status display with branch info
+	s = status -sb
+
+	# Enhanced log visualization with conventional commit types
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	changelog = log --oneline --pretty=format:'%s' --no-merges
+
+	# Conventional Commits quick aliases
+	feat = "!f() { git commit -m \"feat: $*\"; }; f"
+	fix = "!f() { git commit -m \"fix: $*\"; }; f"
+	docs = "!f() { git commit -m \"docs: $*\"; }; f"
+	style = "!f() { git commit -m \"style: $*\"; }; f"
+	refactor = "!f() { git commit -m \"refactor: $*\"; }; f"
+	perf = "!f() { git commit -m \"perf: $*\"; }; f"
+	test = "!f() { git commit -m \"test: $*\"; }; f"
+	build = "!f() { git commit -m \"build: $*\"; }; f"
+	ci = "!f() { git commit -m \"ci: $*\"; }; f"
+	chore = "!f() { git commit -m \"chore: $*\"; }; f"
+	revert = "!f() { git commit -m \"revert: $*\"; }; f"
+
+	# Conventional Commits with scope
+	featsc = "!f() { scope=$1; shift; git commit -m \"feat($scope): $*\"; }; f"
+	fixsc = "!f() { scope=$1; shift; git commit -m \"fix($scope): $*\"; }; f"
+
+	# Breaking changes
+	breaking = "!f() { git commit -m \"feat!: $*\"; }; f"
+	breakingsc = "!f() { scope=$1; shift; git commit -m \"feat($scope)!: $*\"; }; f"
+
+	# Trunk-based development
+	sync = "!git pull --rebase && git push"
+	amend = commit --amend --no-edit
+
+	# GitHub CLI integration
+	pr = "!gh pr create"
+	prs = "!gh pr list"
+
+	# Conventional Commits validation
+	validate-msg = "!f() { echo \"$1\" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\(.+\\))?!?: .+'; }; f"
+
+[push]
+	autoSetupRemote = true
+	default = current    # Pushes current branch to matching name without extra args
+
+[rebase]
+	autoStash = true     # Automatically stashes/unstashes changes during rebase
+	updateRefs = true    # Updates dependent refs when rebasing (Git 2.38+)
+
+[diff]
+        algorithm = patience  # Better handling of code movement
+	colorMoved = default  # Highlights moved blocks differently than added/deleted
+        wsErrorHighlight = all # Highlights whitespace errors
+
+[branch]
+	sort = -committerdate  # Shows recent branches first
+        autoSetupMerge = always # Configures tracking branches automatically
+
+[fetch]
+	prune = true           # Removes references to deleted remote branches
+
+[init]
+	defaultBranch = main   # Uses main instead of master for new repositories
+
+[color]
+	ui = auto
+	        
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan
+
+	# Branch creation with remote tracking
+	nb = "!f() { git checkout -b $1 && git push -u origin $1; }; f"
+
+	# Clean up merged branches
+	cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master\\|develop' | xargs -n 1 git branch -d"
+
+	# Workflow helpers with conventional commits
+	wip = "!git add . && git commit -m 'chore: WIP work in progress'"
+	unwip = "!git log -n 1 | grep -q -c 'chore: WIP work in progress' && git reset HEAD~1"
+	undo = reset HEAD~1 --mixed
+	unstage = reset HEAD --
+
+	# Semantic versioning helpers
+	releases = "!git tag -l | sort -V"
+	last-tag = describe --tags --abbrev=0
+	next-patch = "!git tag | sort -V | tail -1 | awk -F. '{print $1\".\"$2\".\"$3+1}'"
+	next-minor = "!git tag | sort -V | tail -1 | awk -F. '{print $1\".\"$2+1\".0\"}'"
+	next-major = "!git tag | sort -V | tail -1 | awk -F. '{print $1+1\".0.0\"}'"
+
+	# Conventional commit analysis
+	types = "!git log --oneline --pretty=format:'%s' | grep -oE '^[a-z]+' | sort | uniq -c | sort -nr"
+	breaking-changes = "!git log --oneline --grep='BREAKING CHANGE\\|!:' --pretty=format:'%h %s'"
+	features = log --oneline --grep='^feat' --pretty=format:'%h %s'
+	fixes = log --oneline --grep='^fix' --pretty=format:'%h %s'
+	
+	# Enhanced log with conventional commit formatting
+	logcc = log --pretty=conventional --graph
+	recent = "!git logcc --since='2 weeks ago'"
+
+[pager]
+    diff = diff-so-fancy | less --tabs=4 -RFX
+    show = diff-so-fancy | less --tabs=4 -RFX
+
+[commit]
+    template = ~/.gitmessage
+    verbose = true              # Shows diff in commit message editor
+
+[advice]
+    statusHints = true
+    commitBeforeMerge = true
+    detachedHead = true
+
+# Conventional Commits configuration
+[conventional]
+    types = feat,fix,docs,style,refactor,perf,test,build,ci,chore,revert
+    scopes = api,ui,core,auth,db,config,test,ci,docs
+
+# Enhanced diff and merge for better commit analysis
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+
+[rerere]
+    enabled = true              # Remember how conflicts were resolved
+
+# Better commit message validation (requires git hooks)
+[hooks]
+    commit-msg = true
+
+# Log formatting optimized for conventional commits
+[pretty]
+    conventional = format:%C(yellow)%h%C(reset) %C(blue)[%an]%C(reset) %C(green)(%ar)%C(reset)%C(auto)%d%C(reset) %s

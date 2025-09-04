@@ -1,0 +1,563 @@
+# Basic configuration - optimized for M3 Pro MacBook Pro
+add_newline = false
+palette = "catppuccin_mocha"
+command_timeout = 300  # M3 Pro can handle much faster command execution
+scan_timeout = 30      # Quick scanning with M3 Pro performance
+
+# Left prompt format - minimal but informative with Claude awareness
+format = """
+$directory\
+$git_branch\
+$git_status\
+$env_var\
+$character
+"""
+
+# Right prompt format - enhanced for M3 Pro capabilities with performance monitoring
+right_format = """
+$cmd_duration\
+$status\
+$memory_usage\
+$docker_context\
+$nodejs\
+$python\
+$rust\
+$golang\
+$terraform\
+$custom\
+"""
+
+# Directory configuration
+[directory]
+style = "bold blue"
+read_only = " 󰌾"
+truncation_length = 4
+truncation_symbol = "…/"
+truncate_to_repo = true
+
+# Git branch configuration
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "bold purple"
+truncation_length = 20
+
+# Git status configuration
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold green"
+conflicted = "="
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+ignore_submodules = true
+disabled = false
+
+# Command duration - optimized for M3 Pro performance monitoring
+[cmd_duration]
+min_time = 1000  # M3 Pro makes most operations fast, show only slower ones
+format = "[took $duration]($style) "
+style = "yellow"
+show_milliseconds = true  # M3 Pro precision timing
+
+# Character - Claude Code aware
+[character]
+success_symbol = "[➜](bold green)"
+error_symbol = "[✗](bold red)"
+vimcmd_symbol = "[V](bold green)"
+
+# Status module
+[status]
+format = "[$symbol$status]($style) "
+symbol = "✖ "
+style = "bold red"
+disabled = false
+
+# Docker context
+[docker_context]
+symbol = " "
+format = "[$symbol$context]($style) "
+style = "blue"
+only_with_files = true
+detect_files = ["docker-compose.yml", "docker-compose.yaml", "Dockerfile", "docker-compose.test.yml"]
+disabled = false
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+[conda]
+symbol = " "
+
+[crystal]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[fennel]
+symbol = " "
+
+[fossil_branch]
+symbol = " "
+
+[golang]
+symbol = " "
+format = "[$symbol$version]($style) "
+style = "bold cyan"
+disabled = false
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[haxe]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[hostname]
+ssh_symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[kotlin]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+format = "[$symbol$ram]($style) "
+style = "bold dimmed white"
+threshold = 80  # Show when memory usage is high (M3 Pro has 36GB)
+disabled = false
+
+[meson]
+symbol = "󰔷 "
+
+[nim]
+symbol = "󰆥 "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+format = "[$symbol$version]($style) "
+style = "bold green"
+detect_files = ["package.json", ".node-version"]
+detect_folders = ["node_modules"]
+disabled = false
+
+[ocaml]
+symbol = " "
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
+
+[perl]
+symbol = " "
+
+[php]
+symbol = " "
+
+[pijul_channel]
+symbol = " "
+
+[python]
+symbol = " "
+style = "bold yellow"
+detect_files = ["requirements.txt", "pyproject.toml", "setup.py", ".claude/settings.json"]
+detect_folders = [".venv", "venv", ".env"]
+disabled = false
+format = "[$symbol$pyenv_prefix$version]($style) "
+
+[rlang]
+symbol = "󰟔 "
+
+[ruby]
+symbol = " "
+
+[rust]
+symbol = "󱘗 "
+format = "[$symbol$version]($style) "
+style = "bold red"
+disabled = false
+
+[scala]
+symbol = " "
+
+[swift]
+symbol = " "
+
+[terraform]
+symbol = "🏗️ "
+format = "[$symbol$workspace]($style) "
+style = "bold 105"
+disabled = false
+
+[zig]
+symbol = " "
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
+# =============================================================================
+# Performance-Aware Segments
+# =============================================================================
+# These segments adapt based on system performance state
+
+# Performance mode indicator - shows current optimization level
+[custom.perf_mode]
+command = """
+state=$(cat /tmp/terminal-perf-state 2>/dev/null || echo "balanced")
+case $state in
+    throttled) echo "🍃eco" ;;
+    eco) echo "🍃eco" ;;
+    balanced) echo "🔋bal" ;;
+    performance) echo "⚡perf" ;;
+    *) echo "" ;;
+esac
+"""
+when = 'test -f /tmp/terminal-perf-state'
+format = "[$output]($style) "
+style = "bold yellow"
+shell = ["bash", "-c"]
+disabled = false
+
+# Simplified load indicator based on performance state
+[custom.load_indicator]
+command = """
+state=$(cat /tmp/terminal-perf-state 2>/dev/null || echo "balanced")
+case $state in
+    eco) echo "🌡️" ;;
+    throttled) echo "🔥" ;;
+    *) echo "" ;;
+esac
+"""
+when = 'test -f /tmp/terminal-perf-state'
+format = "[$output]($style) "
+style = "bold red"
+shell = ["bash", "-c"]
+disabled = false
+
+# CPU load indicator - simplified without bc
+[custom.cpu_load]
+command = """
+load=$(sysctl -n vm.loadavg 2>/dev/null | awk '{print int($1)}')
+if [ "$load" -gt 6 ]; then
+  echo "🚨$load"
+elif [ "$load" -gt 4 ]; then
+  echo "⚠️$load"
+fi
+"""
+when = '[[ "${TERMINAL_PERF_MODE:-balanced}" != "eco" ]]'
+format = "[$output]($style) "
+style = "bold orange"
+shell = ["bash", "-c"]
+disabled = false
+
+# Battery-aware indicator - shows when on battery with performance implications
+[custom.battery_perf]
+command = """
+if pmset -g batt 2>/dev/null | grep -q "Battery Power"; then
+  state=$(cat /tmp/terminal-perf-state 2>/dev/null || echo "balanced")
+  if [ "$state" = "performance" ]; then
+    echo "🔋⚠️"  # Warning: high performance on battery
+  elif [ "$state" = "eco" ]; then
+    echo "🔋✓"   # Good: eco mode on battery
+  fi
+fi
+"""
+when = 'pmset -g batt 2>/dev/null | grep -q "Battery Power"'
+format = "[$output]($style) "
+style = "bold yellow"
+shell = ["bash", "-c"]
+disabled = false
+
+# Claude Code specific configurations
+[env_var.CLAUDE_SESSION]
+variable = "CLAUDE_SESSION"
+symbol = "🤖 "
+format = "[$symbol]($style)"
+style = "bold mauve"
+disabled = false
+
+[env_var.ANTHROPIC_API_KEY]
+variable = "ANTHROPIC_API_KEY"
+symbol = "🧠 "
+format = "[$symbol]($style)"
+style = "bold blue"
+disabled = false
+
+[custom.claude_project]
+command = """
+if [ -f ".claude/settings.json" ]; then
+  echo "📁"
+elif [ -f "CLAUDE.md" ]; then
+  echo "📝"
+fi
+"""
+when = '[ -f ".claude/settings.json" ] || [ -f "CLAUDE.md" ]'
+format = "[$output]($style) "
+style = "bold purple"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.ai_models]
+command = """
+if [ -n "$OPENAI_API_KEY" ] && [ -n "$ANTHROPIC_API_KEY" ]; then
+  echo "🔗"
+elif [ -n "$OPENAI_API_KEY" ]; then
+  echo "🔧"
+elif [ -n "$ANTHROPIC_API_KEY" ]; then
+  echo "🧠"
+fi
+"""
+when = '[ -n "$OPENAI_API_KEY" ] || [ -n "$ANTHROPIC_API_KEY" ] || [ -n "$GOOGLE_API_KEY" ] || [ -n "$GROQ_API_KEY" ]'
+format = "[$output]($style) "
+style = "bold yellow"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.pydantic_ai]
+command = """
+if grep -q "pydantic-ai" pyproject.toml 2>/dev/null || grep -q "pydantic-ai" requirements.txt 2>/dev/null; then
+  echo "🤖"
+fi
+"""
+when = '[ -f "pyproject.toml" ] || [ -f "requirements.txt" ]'
+format = "[$output]($style) "
+style = "bold green"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.test_status]
+command = """
+if [ -d "tests/" ]; then
+  count=$(find tests/ -name "*.py" -not -name "__init__.py" 2>/dev/null | wc -l | tr -d ' ')
+  if [ "$count" -gt 0 ]; then
+    echo "🧪$count"
+  fi
+fi
+"""
+when = '[ -d "tests/" ]'
+format = "[$output]($style) "
+style = "bold cyan"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.make_available]
+command = """
+if [ -f "Makefile" ]; then
+  echo "⚡"
+fi
+"""
+when = '[ -f "Makefile" ]'
+format = "[$output]($style) "
+style = "bold peach"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.container_status]
+command = """
+if [ -f "docker-compose.yml" ] || [ -f "Dockerfile" ]; then
+  if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+    echo "🐳"
+  else
+    echo "📦"
+  fi
+fi
+"""
+when = '[ -f "docker-compose.yml" ] || [ -f "Dockerfile" ]'
+format = "[$output]($style) "
+style = "bold blue"
+shell = ["bash", "-c"]
+disabled = false
+
+# M3 Pro specific optimizations
+[custom.m3_pro_indicator]
+command = """
+if system_profiler SPHardwareDataType 2>/dev/null | grep -q "Apple M3 Pro"; then
+  echo "⚡"
+fi
+"""
+when = "true"
+format = "[$output]($style) "
+style = "bold green"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.unified_memory]
+command = """
+if system_profiler SPHardwareDataType 2>/dev/null | grep -q "Memory: 36 GB"; then
+  echo "🧠36GB"
+fi
+"""
+when = "true"
+format = "[$output]($style) "
+style = "bold cyan"
+shell = ["bash", "-c"]
+disabled = false
+
+# Thermal state disabled - pmset thermlog can hang
+# Use perf-check alias to manually check system state instead
+[custom.thermal_state]
+disabled = true
+
+[custom.performance_cores]
+command = """
+if system_profiler SPHardwareDataType 2>/dev/null | grep -q "6 performance and 6 efficiency"; then
+  echo "💻12"
+fi
+"""
+when = "true"
+format = "[$output]($style) "
+style = "bold yellow"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.metal_acceleration]
+command = """
+if system_profiler SPDisplaysDataType 2>/dev/null | grep -q "Metal" || [ -n "$PYTORCH_ENABLE_MPS_FALLBACK" ]; then
+  echo "🔬"
+fi
+"""
+when = "true"
+format = "[$output]($style) "
+style = "bold purple"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.rosetta_detection]
+command = """
+if pgrep -f "oahd" >/dev/null 2>&1; then
+  echo "🔄"
+fi
+"""
+when = "true"
+format = "[$output]($style) "
+style = "bold orange"
+shell = ["bash", "-c"]
+disabled = false
+
+[custom.high_power_mode]
+command = """
+if pmset -g 2>/dev/null | grep -q "powernap.*1"; then
+  echo "⚡⚡"
+fi
+"""
+when = "true"
+format = "[$output]($style) "
+style = "bold green"
+shell = ["bash", "-c"]
+disabled = false
+
+# Neovim Context Bridge - Updates context for nvim to consume
+[custom.nvim_bridge]
+command = """
+# Update context bridge for nvim
+$HOME/.config/nvim/scripts/update-nvim-context.sh 2>/dev/null
+# Return empty string so nothing shows in prompt
+echo ""
+"""
+when = "true"
+format = ""  # Don't display anything
+shell = ["bash", "-c"]
+disabled = false

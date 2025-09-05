@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Local/Secret files
+*.local
+*.secret
+.env
+.env.*
+!.env.example
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Chezmoi state
+.chezmoistate.boltdb*

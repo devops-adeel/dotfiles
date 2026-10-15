@@ -1,0 +1,5 @@
+# Terminal rendering for cmux (and Ghostty). Pane/split keys live in ~/.config/cmux/cmux.json.
+theme = Catppuccin Mocha
+macos-option-as-alt = true
+keybind = shift+enter=text:\n
+scrollback-limit = 50000000

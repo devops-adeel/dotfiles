@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "schemaVersion": 1,
+
+  "app": {
+    "confirmQuit": "always",
+    "warnBeforeClosingWorkspace": true,
+    "goToWorkspaceOrder": "recent",
+    "reorderOnNotification": "agentActivity"
+  },
+
+  "terminal": {
+    "autoResumeAgentSessions": true,
+    "copyOnSelect": true,
+    "agentHibernation": { "enabled": false, "maxLiveTerminals": 24 }
+  },
+
+  // Studio vim-style pane keys (ported from the Mac Studio's Ghostty config).
+  // No close binding on purpose: closing a cmux ssh workspace stops its remote terminals.
+  "shortcuts": {
+    "bindings": {
+      "focusLeft": "ctrl+opt+h",
+      "focusDown": "ctrl+opt+j",
+      "focusUp": "ctrl+opt+k",
+      "focusRight": "ctrl+opt+l",
+      "splitRight": "ctrl+opt+v",
+      "splitDown": "ctrl+opt+s",
+      "toggleSplitZoom": "ctrl+opt+z",
+      "equalizeSplits": "ctrl+opt+e",
+      "resize-pane-left": "ctrl+opt+shift+h",
+      "resize-pane-down": "ctrl+opt+shift+j",
+      "resize-pane-up": "ctrl+opt+shift+k",
+      "resize-pane-right": "ctrl+opt+shift+l"
+    }
+  },
+
+  "commands": [
+    {
+      "name": "Studio: shell",
+      "description": "Persistent cmux ssh workspace on the Mac Studio",
+      "keywords": ["studio", "ssh"],
+      "command": "cmux ssh adeelsmacstudio --name Studio"
+    },
+    {
+      "name": "Studio: agents view",
+      "description": "Claude Code background sessions on the Mac Studio",
+      "keywords": ["studio", "bg", "agents"],
+      "command": "cmux ssh adeelsmacstudio --name 'Studio agents' --command 'claude agents'"
+    },
+    // One persistent Studio workspace per project. Run from a LOCAL pane (palette types into the focused terminal).
+    {"name": "Studio: hermes", "description": "Persistent Studio workspace in hermes-agent", "keywords": ["studio", "hermes", "hermes-agent"], "command": "cmux ssh adeelsmacstudio --name hermes --command 'cd ~/Developer/hermes-agent 2>/dev/null || cd ~/1-projects/hermes-agent 2>/dev/null || cd ~/Documents/1-projects/hermes-agent; exec zsh -l'"},
+    {"name": "Studio: langfuse", "description": "Persistent Studio workspace in langfuse", "keywords": ["studio", "langfuse", "langfuse"], "command": "cmux ssh adeelsmacstudio --name langfuse --command 'cd ~/Developer/langfuse 2>/dev/null || cd ~/1-projects/langfuse 2>/dev/null || cd ~/Documents/1-projects/langfuse; exec zsh -l'"},
+    {"name": "Studio: langfuse-config", "description": "Persistent Studio workspace in langfuse-config", "keywords": ["studio", "langfuse-config", "langfuse-config"], "command": "cmux ssh adeelsmacstudio --name langfuse-config --command 'cd ~/Developer/langfuse-config 2>/dev/null || cd ~/1-projects/langfuse-config 2>/dev/null || cd ~/Documents/1-projects/langfuse-config; exec zsh -l'"},
+    {"name": "Studio: langfuse-deployment", "description": "Persistent Studio workspace in langfuse-deployment", "keywords": ["studio", "langfuse-deployment", "langfuse-deployment"], "command": "cmux ssh adeelsmacstudio --name langfuse-deployment --command 'cd ~/Developer/langfuse-deployment 2>/dev/null || cd ~/1-projects/langfuse-deployment 2>/dev/null || cd ~/Documents/1-projects/langfuse-deployment; exec zsh -l'"},
+    {"name": "Studio: plex", "description": "Persistent Studio workspace in plex-media-stack", "keywords": ["studio", "plex", "plex-media-stack"], "command": "cmux ssh adeelsmacstudio --name plex --command 'cd ~/Developer/plex-media-stack 2>/dev/null || cd ~/1-projects/plex-media-stack 2>/dev/null || cd ~/Documents/1-projects/plex-media-stack; exec zsh -l'"},
+    {"name": "Studio: ltx", "description": "Persistent Studio workspace in ltx-2-mlx", "keywords": ["studio", "ltx", "ltx-2-mlx"], "command": "cmux ssh adeelsmacstudio --name ltx --command 'cd ~/Developer/ltx-2-mlx 2>/dev/null || cd ~/1-projects/ltx-2-mlx 2>/dev/null || cd ~/Documents/1-projects/ltx-2-mlx; exec zsh -l'"},
+    {"name": "Studio: chat-app", "description": "Persistent Studio workspace in chat-app-pydantic-ai", "keywords": ["studio", "chat-app", "chat-app-pydantic-ai"], "command": "cmux ssh adeelsmacstudio --name chat-app --command 'cd ~/Developer/chat-app-pydantic-ai 2>/dev/null || cd ~/1-projects/chat-app-pydantic-ai 2>/dev/null || cd ~/Documents/1-projects/chat-app-pydantic-ai; exec zsh -l'"},
+    {"name": "Studio: weather", "description": "Persistent Studio workspace in weather-agent", "keywords": ["studio", "weather", "weather-agent"], "command": "cmux ssh adeelsmacstudio --name weather --command 'cd ~/Developer/weather-agent 2>/dev/null || cd ~/1-projects/weather-agent 2>/dev/null || cd ~/Documents/1-projects/weather-agent; exec zsh -l'"},
+    {"name": "Studio: grafana", "description": "Persistent Studio workspace in grafana-orbstack", "keywords": ["studio", "grafana", "grafana-orbstack"], "command": "cmux ssh adeelsmacstudio --name grafana --command 'cd ~/Developer/grafana-orbstack 2>/dev/null || cd ~/1-projects/grafana-orbstack 2>/dev/null || cd ~/Documents/1-projects/grafana-orbstack; exec zsh -l'"}
+  ]
+}
